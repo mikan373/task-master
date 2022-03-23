@@ -1,5 +1,6 @@
 hr {
   border-top: 1px solid #8c8b8b;
+  margin-bottom: 2em;
 }
 
 body {
@@ -10,7 +11,7 @@ body {
   color: #5e6472;
 }
 
-h1 {
+.title {
   text-align: left;
   margin-right: 10%;
   margin-left: 10%;
@@ -18,123 +19,123 @@ h1 {
   font-family: "Montserrat Alternates", sans-serif;
 }
 
-h4 {
-  margin-block-start: 1.33em;
-  margin-block-end: 5px;
-  font-family: "IBM Plex Sans KR", sans-serif;
-}
-
-table {
-  border: 1px solid;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 6px;
-  overflow: hidden;
-  margin: auto;
-  table-layout: fixed;
+/*カード*/
+.card {
   width: 70%;
+  margin: 1em auto;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0px 8px 8px #ccc;
+  display: flex;
+  padding: 1em 1em 1em 1em;
   font-family: "IBM Plex Sans KR", sans-serif;
+  border-left: 1.5em solid #ffa69e;
 }
 
-table th {
-  border-bottom: 1px solid #073764;
-  border-right: 1px solid #073764;
-  color: #5e6472;
-  background: #ffa69e;
+.card-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-th.width60 {
-  width: 50%;
+.checkbox {
+  width: 1.6em;
+  height: 1.6em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
 }
 
-th.width20 {
-  width: 25%;
+.card-content {
+  width: 80%;
+  padding: 0 1em 0 1em;
+  display: flex;
+  flex-direction: column;
 }
 
-table td {
-  border-bottom: 1px solid #073764;
-  border-right: 1px solid #073764;
-  background: #ffffff;
-  word-break: break-all;
+.card-padding {
+  margin: 0.5em;
 }
 
-table tbody tr:last-child th,
-table tbody tr:last-child td {
-  border-bottom: none;
+.card-button {
+  display: flex;
+  justify-content: flex-end;
+  width: 20%;
+  height: 1.5em;
 }
 
-table thead th:last-child {
-  border-right: none;
-}
-table tbody td:last-child {
-  border-right: none;
-}
-
-.task {
-  width: 60%;
-}
-
-.button {
-  color: #5e6472;
-  background: #ffa69e;
-  width: 50px;
-  height: 25px;
-  border-radius: 5px;
-  /*border-radius: 0.1px solid #5e6472;*/
-  font-family: "IBM Plex Sans KR", sans-serif;
+.buttons {
+  width: 40px;
+  height: 40px;
+  color:#8c8b8b;
+  background-color: #ffffff;
+  border: none;
   cursor: pointer;
 }
 
-.button:hover {
-  background: #ff8d83;
+.buttons:hover {
+  color:#ff8d83;
 }
 
-/*========= 検索窓のためのCSS ===============*/
-
-/*全体*/
-.hidden_box {
-  margin: 2em 0; /*前後の余白*/
-  padding: 0;
+.card-content-task {
+  display: flex;
+  justify-content: flex-start;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-/*ボタン装飾*/
-.hidden_box label {
-  padding: 15px;
-  font-weight: bold;
-  border: solid 1px black;
-  cursor: pointer;
-  color: #5e6472;
-  background: #ffa69e;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  position: absolute;
-  right: 10%;
+.card-content-update {
+  display: flex;
+  justify-content: flex-start;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-/*ボタンホバー時*/
-.hidden_box label:hover {
-  background: #ff8d83;
+.input-task {
+  font-size: 1em;
+  width: 90%;
+  height: 2em;
+  border: none;
+  outline: none;
+  font-family: "IBM Plex Sans KR", sans-serif;
 }
 
-/*チェックは見えなくする*/
-input[type="checkbox"].label1 {
+.card-content-date {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.hide {
   display: none;
 }
 
-/*中身を非表示にしておく*/
-.hidden_box .hidden_show {
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: 0.8s;
+.task {
+  border:none ;
 }
 
-/*クリックで中身表示*/
-.hidden_box input:checked ~ .hidden_show {
-  padding: 10px 0;
-  height: auto;
-  opacity: 1;
-  visibility: visible;
+.new-button {
+  width: 50px;
+  height: 50px;
+  color:#8c8b8b;
+  background-color: #edf7f7;
+  border: none;
+  cursor: pointer;
+  margin-top: 1em;
+}
+
+.new-button:hover {
+  color:#ff8d83;
+}
+
+.card-content-update {
+  border-bottom: 1px solid #8c8b8b;
+}
+
+.card-content-update-input{
+ border: none; 
+}
+
+.form-new {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid #8c8b8b;
 }

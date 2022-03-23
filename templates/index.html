@@ -9,70 +9,96 @@
 
 {% block body %}
 <div class="content">
-    <h1> Task Master </h1>
+    <h1 class="title"> Task Master </h1>
     <hr>
+    <div id="error-box"></div>
     {% if tasks|length < 1 %}
     <h4>There're no tasks. Create one below!</h4>
     {% else %}
-        <h4>Task List</h4>
+        {% for task in tasks %}
+            <div id="task-{{ task.id }}" class="card">
+                <div class="card-checkbox">
+                    <input class="checkbox" id="task-{{ task.id }}-completed" type="checkbox" onclick="updateCompleted({{ task.id }})" {{ "checked" if task.completed == 1 }}>
+                </div>
+                <div class="card-content">
+                    <div class="card-content-task">
+                        <h3 id="task-{{ task.id }}-content" class="card-padding">{{ task.content }}</h3>
+                    </div>
+                    <div class="card-content-update hide" id="task-{{ task.id }}-update">
 
-        <table>
-            <thead>
-                <tr>
-                    <th class="width60">Task</th>
-                    <th class="width20">Added</th>
-                    <th class="width20">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for task in tasks %}
-                <tr>
-                    <td>{{ task.content }}</td>
-                    <td>{{ task.date_created.date() }}</td>   <!--.date()がないと、時間も返してしまう-->
-                    <td>
-                        <a href="/delete/{{ task.id }}">Delete</a>
-                        <br>
-                        <a href="/update/{{ task.id }}">Update</a> 
-                        <br>
-                        <a href="/completed/{{ task.id }}"> Completed</a> 
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                        <input class="input-task" id="task-{{ task.id }}-update-input" type="text" name="content"  autocomplete = "off">
+                        <button class="buttons" value="Save" onclick="updateTask({{ task.id }})">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                        </button>
+                        <button class="buttons" onclick="toggleUpdateTask({{ task.id }})" >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                 
+                    </div>
+                    <div class="card-content-date">
+                        <p class="card-padding">{{ task.date_created.date() }}</p>
+                    </div>  
+                </div>
+
+                <div class="card-button">
+
+                    <button class="buttons" id="update-button-{{ task.id }}" onclick="toggleUpdateTask({{ task.id }})">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                    </button>    
+
+                    <div class="hide" id="update-form-{{ task.id }}">
+                        <form action="/" method="POST">   
+                            <input class="task" id="form-content" type="text" name="content"  autocomplete = "off">
+                            <input class="button" value="Save" onclick="updateTask({{ task.id }})>
+                            <input class="button" onclick="cancelNewTask()" value="Cancel" >
+                        </form>
+                    </div>
+
+                    <button class="buttons">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <a xlink:href="/delete/{{ task.id }}">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </a>
+                        </svg>
+                    </button>
+
+                </div> 
+
+            </div>  
+        {% endfor %}
     {% endif %}
-    
 
-    <div class="hidden_box">
-        <label for="label1">＋</label>
-        <input type="checkbox" class="label1" id="label1"/>
-        
-        
-        <!--非表示ここから-->     
-        <div class="hidden_show">  
-            <br>
-            <br>
-            <h4>Add more tasks!</h4>
-            <form action="/" method="POST">   
-                <input class="task" type="text" name="content" id="content" autocomplete = "off"　placeholder="Task name">
-                <input class="button" type="submit" value="Add" >
+        <button class="new-button" id="new-button" onclick="toggleNewTask()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </button>    
+        <div class="card hide" id="new-card">
+            <form class="form-new" action="/" method="POST">   
+                <input class="input-task" type="text" name="content" id="content" autocomplete = "off"　placeholder="Task name">
+                <button class="buttons" type="submit" value="Save" >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                </button>
+                <button class="buttons" onclick="cancelNewTask()" value="Cancel" >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </form>
-        <!--ここまで-->
         </div>
-    </div>
+
+</div>
 
 
-    <!--<h4>Add Tasks</h4>
-    <form action="/" method="POST">
-        <input class="task" type="text" name="content" id="content" autocomplete = "off"　placeholder="Task name">
-        <input class="button" type="submit" value="Add" >
-    </form>
     
-    <h4>Completed Task</h4>
-    -->
 
-        
-
-    </div>
 
 {% endblock %}

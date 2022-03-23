@@ -1,5 +1,5 @@
 #flaskモジュールの、Flaskクラスをインポート　他
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -23,6 +23,14 @@ class Todo(db.Model):   #TodoというDBのデータ型やデータの制約を�
     #※作成したインスタンスを単純にprintすると、インスタンスの名前とアドレス(メモリの場所？)が返されてしまう
     def __repr__(self):
         return '<Task %r>' % self.id
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'completed': self.completed,
+            'date_created': self.date_created
+        }
 
 
 
@@ -48,7 +56,7 @@ def index():
             return redirect('/')
 
     else:
-        #.query.order_byでアルファベット昇順にソートする .all()を使ってリスト型で取得
+        #.query.order_byでタスク作成日昇順にソートする .all()を使ってリスト型で取得
         tasks = Todo.query.order_by(Todo.date_created).all()
         return render_template('index.html', tasks=tasks)
 
@@ -69,25 +77,27 @@ def delete(id):
         return "There was an issue deleting that task"
 
 
-@app.route('/update/<int:id>', methods = ['POST', 'GET'])
+@app.route('/task/<int:id>', methods = ['PUT'])
 def update(id):
-    
-    task = Todo.query.get_or_404(id)
+    task = Todo.query.get(id)
+    print(task)
+    if not task:
+        abort(404, {'code': 'Not found', 'message': 'task not found'})
 
-    if request.method == 'POST':        
-        #task.content = request.form.get("content")  #これだとエラーが出る…
-        task.content = request.form["content"]
-        
-        try:    
-            db.session.commit()
-            return redirect('/')
-        except:
-            return "There was an issue updating that task"  
-    
-    else:
-      return render_template("update.html", task=task)
+    payload = request.json #JSON形式でPUTされたものを受け取る
+    print(payload)
 
+    completed = payload.get("completed", None)
+    content = payload.get("content", None)
 
+    if completed is not None:
+        task.completed = completed
+
+    if content is not None:
+        task.content = content
+
+    db.session.commit()
+    return jsonify(task.to_dict())
 
 
 #このファイルから実行されたらapp.runを実行する
