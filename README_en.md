@@ -15,10 +15,6 @@ Through making this app, I practiced:
 - REST API
 - HTML/CSS/JavaScript
 
-## Parts
-[Diagram of layers]()
-SQLite etc
-
 ## Requirements
 - Python 3.8+
 - Python 3 Virtual Environment
