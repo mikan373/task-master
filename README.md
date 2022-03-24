@@ -1,3 +1,5 @@
+**日本語版は`README_jp.md`をご参照ください**
+
 # Task Master
 
 ![Screenshot of Application](screenshot1.png)
