@@ -1,4 +1,4 @@
-**日本語版は`README_jp.md`をご参照ください**
+**日本語版のREADMEは[こちら](https://github.com/mikan373/task-master/blob/main/README_jp.md)です。**
 
 # Task Master
 
